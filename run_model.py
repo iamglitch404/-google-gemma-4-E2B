@@ -20,7 +20,7 @@ def main():
         # So we use standard loading and hope it fits, or you can add quantization.
         model = AutoModelForCausalLM.from_pretrained(
             model_id,
-            torch_dtype=torch.float32, # CPU inference works best with float32
+            dtype=torch.bfloat16, # Use bfloat16 to save memory (prevents OOM crashes)
             low_cpu_mem_usage=True,
             token=hf_token
         )
