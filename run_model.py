@@ -14,14 +14,15 @@ def main():
         if not hf_token:
             print("Warning: HF_TOKEN environment variable is not set. If the model is gated, loading will fail.")
 
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
+        tokenizer = AutoTokenizer.from_pretrained(model_id, token=hf_token)
         
         # We load the model in 8-bit or standard depending on memory, but GitHub actions has limited memory.
         # So we use standard loading and hope it fits, or you can add quantization.
         model = AutoModelForCausalLM.from_pretrained(
             model_id,
             torch_dtype=torch.float32, # CPU inference works best with float32
-            low_cpu_mem_usage=True
+            low_cpu_mem_usage=True,
+            token=hf_token
         )
         
         print(f"Model loaded. Generating response for prompt: '{prompt}'")
